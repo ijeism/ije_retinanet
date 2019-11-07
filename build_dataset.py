@@ -15,26 +15,27 @@ import argparse
 import xml.etree.ElementTree as ET
 import random
 import csv
-from config import ijeism_retinanet_config as config
 
 # Construct argument parser
 ap = argparse.ArgumentParser()
 
-ap.add_argument("-a", "--annotations", default=config.ANNOT_PATH, help = "path to annotations")
-ap.add_argument("-i", "--images", default=config.IMAGES_PATH, help = "path to images")
-ap.add_argument("-r", "--train", default=config.TRAIN_CSV, help = "path to output training .csv file")
-ap.add_argument("-e", "--test", default=config.TEST_CSV, help = "path to outpust test .csv file")
-ap.add_argument("-c", "--classes", default=config.CLASSES_CSV, help = "path to output classes .csv file")
-ap.add_argument("-s", "--split", default=config.TRAIN_TEST_SPLIT, help = "train/test split")
+ap.add_argument("-i", "--input", required=True, help = "path to input images directory")
+ap.add_argument("-l", "--labels", required=True, help = "path to annotations directory")
+ap.add_argument("-r", "--train", required=True, help = "path to output training.csv file")
+ap.add_argument("-e", "--test", required=True, help = "path to outpust test.csv file")
+ap.add_argument("-c", "--classes", required=True, help = "path to output classes.csv file")
+ap.add_argument("-a", "--annotations", required=True, help = "path to annotations.csv")
+ap.add_argument("-s", "--split", default = 0.8, type = float, help = "train/test split")
 
 args = vars(ap.parse_args())
 
 # create var names for all arguments
-annot_path = args["annotations"]
-images_path = args["images"]
+annot_path = args["labels"]
+images_path = args["input"]
 train_csv = args["train"]
 test_csv = args["test"]
-classes_csv = args["classes"]
+CLASSES_FILE = args["classes"]
+ANNOTATIONS_FILE = args["annotations"]
 train_test_split = args["split"]
 
 # grab image paths to construct train and test split on
@@ -52,7 +53,7 @@ dataset = [
 ]
 
 # initialize set of classes and annotations
-CLASSES = set()
+classes = set()
 annotations = []
 
 # loop over train and test datasets
@@ -112,11 +113,20 @@ for (dType, imagePaths, outputCSV) in dataset:
                     # write to outputCSV
                     writer.writerows(annotations)
                     # update set of unique class labels
-                    CLASSES.add(obj_name)
+                    classes.add(obj_name)
+
+# write the annotations to file
+print("[INFO] writing classes ...")
+with open(ANNOTATIONS_FILE, 'w') as f:
+    writer = csv.writer(f)
+    writer.writerows(annotations)
+print("[INFO] annotations.csv completed")
 
 # write the classes to file
-print("[INFO] writing classes ...")
-csv = open(classes_csv, "w")
-rows = [",".join([c, str(i)]) for (i, c) in enumerate(CLASSES)]
-csv.write("\n".join(rows))
-csv.close()
+print("[INFO] writing annotations ...")
+with open(CLASSES_FILE, 'w') as f:
+    for i, line in enumerate(classes):
+      f.write('{},{}\n'.format(line,i))
+print("[INFO] classes.csv completed")
+
+print("[FINAL] Task completed!")
