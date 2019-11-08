@@ -24,7 +24,6 @@ ap.add_argument("-l", "--labels", required=True, help = "path to annotations dir
 ap.add_argument("-r", "--train", required=True, help = "path to output training.csv file")
 ap.add_argument("-e", "--test", required=True, help = "path to outpust test.csv file")
 ap.add_argument("-c", "--classes", required=True, help = "path to output classes.csv file")
-ap.add_argument("-a", "--annotations", required=True, help = "path to annotations.csv")
 ap.add_argument("-s", "--split", default = 0.8, type = float, help = "train/test split")
 
 args = vars(ap.parse_args())
@@ -34,8 +33,7 @@ annot_path = args["labels"]
 images_path = args["input"]
 train_csv = args["train"]
 test_csv = args["test"]
-CLASSES_FILE = args["classes"]
-ANNOTATIONS_FILE = args["annotations"]
+classes_csv = args["classes"]
 train_test_split = args["split"]
 
 # grab image paths to construct train and test split on
@@ -116,15 +114,15 @@ for (dType, imagePaths, outputCSV) in dataset:
                     classes.add(obj_name)
 
     # write the annotations to file
-    print("[INFO] writing classes ...")
-    with open(ANNOTATIONS_FILE, 'w') as f:
+    print("[INFO] writing {} annotations ...".format(dType))
+    with open(outputCSV, 'w') as f:
         writer = csv.writer(f)
         writer.writerows(annotations)
-    print("[INFO] annotations.csv completed")
+    print("[INFO] {}.csv completed".format(dType))
 
 # write the classes to file
-print("[INFO] writing annotations ...")
-with open(CLASSES_FILE, 'w') as f:
+print("[INFO] writing classes ...")
+with open(classes_csv, 'w') as f:
     for i, line in enumerate(classes):
       f.write('{},{}\n'.format(line,i))
 print("[INFO] classes.csv completed")
