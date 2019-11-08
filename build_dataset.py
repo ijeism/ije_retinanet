@@ -115,12 +115,12 @@ for (dType, imagePaths, outputCSV) in dataset:
                     # update set of unique class labels
                     classes.add(obj_name)
 
-# write the annotations to file
-print("[INFO] writing classes ...")
-with open(ANNOTATIONS_FILE, 'w') as f:
-    writer = csv.writer(f)
-    writer.writerows(annotations)
-print("[INFO] annotations.csv completed")
+    # write the annotations to file
+    print("[INFO] writing classes ...")
+    with open(ANNOTATIONS_FILE, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(annotations)
+    print("[INFO] annotations.csv completed")
 
 # write the classes to file
 print("[INFO] writing annotations ...")
