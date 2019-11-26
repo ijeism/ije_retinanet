@@ -52,10 +52,12 @@ dataset = [
 
 # initialize set of classes and annotations
 classes = set()
-annotations = []
+# annotations = []
 
 # loop over train and test datasets
 for (dType, imagePaths, outputCSV) in dataset:
+
+    annotations = []
     # load the contents
     print("[INFO] creating '{}' set ...".format(dType))
     print("[INFO] {} total images in '{}'".format(len(imagePaths), dType))
