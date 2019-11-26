@@ -115,6 +115,7 @@ for (dType, imagePaths, outputCSV) in dataset:
 
     # write the annotations to file
     print("[INFO] writing {} annotations ...".format(dType))
+    print("[INFO] total {} annotations".format(len(annotations)))
     with open(outputCSV, 'w') as f:
         writer = csv.writer(f)
         writer.writerows(annotations)
