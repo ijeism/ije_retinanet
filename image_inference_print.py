@@ -43,7 +43,7 @@ inference_images = [os.path.join(input_path, file) for file in glob.glob(input_p
 # loop over inference images
 for (i, img_path) in enumerate(inference_images):
 
-    print("[INFO] saving image {} of {}".format(i+1, len(test_images)))
+    print("[INFO] saving image {} of {}".format(i+1, len(inference_images)))
 
     #load image
     image = read_image_bgr(img_path)

@@ -40,7 +40,7 @@ for (i, imagePath) in enumerate(imagePaths):
     print("[INFO] predicting on image {} of {}".format(i+1, len(imagePaths)))
 
     #Create the filename to store the predictions in
-    filename = (imagePath.split(os.path.sep)[-1]).split(",")[0]
+    filename = (imagePath.split(os.path.sep)[-1]).split(".")[0]
     output_file = os.path.sep.join([args["output"], "{}.txt".format(filename)])
     file = open(output_file, 'w')
 
@@ -65,7 +65,7 @@ for (i, imagePath) in enumerate(imagePaths):
 
         # create row for each prediction in the format:
         # <classname> <confidence> <ymin> <xmin> <ymax> <xmax>
-        row = " ".join(LABELS[label], str(score), str(box[1]), str(box[0]), str(box[3]), str(box[2])])
+        row = " ".join([LABELS[label], str(score), str(box[1]), str(box[0]), str(box[3]), str(box[2])])
 
         # write each row of prediction in the corresponding txt file
         file.write("{}\n".format(row))
