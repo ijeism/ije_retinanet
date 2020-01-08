@@ -6,7 +6,6 @@ and writes predictions to disk.
 
 # import packages
 from keras_retinanet.utils.image import preprocess_image, read_image_bgr, resize_image
-from config import ijeism_retinanet_config as config
 from keras_retinanet import models
 from imutils import paths
 
@@ -14,14 +13,15 @@ import numpy as np
 import argparse
 import os
 
+base_dir = os.getcwd()
 
 # construct argument parser
 ap = argparse.ArgumentParser()
 
 ap.add_argument("-m", "--model", required=True, help = "path to pre-trained model")
-ap.add_argument("-l", "--labels", default=config.CLASSES_CSV, help = "path to class labels")
+ap.add_argument("-l", "--labels", default=base_dir + '/images_subset/classes.csv', help = "path to class labels")
 ap.add_argument("-i", "--input", required=True, help = "path to directory containing input images")
-ap.add_argument("-o", "--output", default=config.OUTPUT_DIR, help = "path to directory to store predictions")
+ap.add_argument("-o", "--output", default=base_dir + '/data/', help = "path to directory to store predictions")
 ap.add_argument("-c", "--confidence", type=float, default=0.5, help = "minimum probability to filter weak detections")
 
 args = vars(ap.parse_args())
